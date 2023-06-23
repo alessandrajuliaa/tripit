@@ -1,4 +1,4 @@
-# Import required modules
+# CONFIGURAÇÃO BÁSICA DO AMBIENTE
 from langchain.agents import Tool, AgentExecutor, LLMSingleActionAgent, AgentOutputParser
 from langchain.prompts import StringPromptTemplate
 from langchain import LLMChain
@@ -10,8 +10,8 @@ import re
 import os
 import chainlit as cl
 
-# Set OpenAI API key
-os.environ["OPENAI_API_KEY"] = "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"
+# APIKEY
+os.environ["OPENAI_API_KEY"] = "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"
 
 '''
 template = """
@@ -79,13 +79,13 @@ class CustomPromptTemplate(StringPromptTemplate):
 class CustomOutputParser(AgentOutputParser):
 
     def parse(self, llm_output: str) -> Union[AgentAction, AgentFinish]:
-        # Check if agent should finish
+        # Check if agent should finish -- Verifique se o agente deve finalizar.
         if "Final Answer:" in llm_output:
             return AgentFinish(
                 return_values={"output": llm_output.split("Final Answer:")[-1].strip()},
                 log=llm_output,
             )
-        # Parse out the action and action input
+        # Parse out the action and action input -- Realizar a análise (ou extração) da ação e da entrada da ação.
         regex = r"Action\s*\d*\s*:(.?)\nAction\s\d*\s*Input\s*\d*\s*:[\s](.)"
         match = re.search(regex, llm_output, re.DOTALL)
         if not match:
@@ -173,7 +173,7 @@ def agent():
 
     return agent_executor
 
-
-if __name__ == "_main_":
+# Instancia e inicializa agente
+if __name__ == "__main__":
     agent_instance = agent()
     agent_instance.run_chat()
